@@ -1,4 +1,5 @@
+let targetRowColCoords = []
+
 window.onclick = (e) => {
-  console.log(e.target)
-  console.log(e.target.parentElement)
+  targetRowColCoords = [e.target.className, e.target.parentElement.className]
 }
