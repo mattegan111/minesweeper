@@ -14,10 +14,10 @@ const gameboardSolution = [
 ]
 
 function placeMines() {
-  gameboardSolution.forEach(column => {
-    column.forEach(cell => {
+  gameboardSolution.forEach((column, colKey) => {
+    column.forEach((row, rowKey) => {
       if (Math.random() > 0.5){
-        cell = 'x'
+        gameboardSolution[colKey][rowKey] = 'x'
       }
     })
   })
