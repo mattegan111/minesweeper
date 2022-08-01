@@ -3,6 +3,57 @@ let targetRowColCoords = []
 window.onclick = (e) => {
   targetRowColCoords = [e.target.className.split(" ")[0], e.target.parentElement.className]
   e.target.innerHTML = gameboardSolution[targetRowColCoords[0]][targetRowColCoords[1]]
+  const surroundingCellsCoords = getSurroundingCellsCoords(targetRowColCoords[0], targetRowColCoords[1])
+}
+
+function getSurroundingCellsCoords(row, col) {
+  row = parseInt(row)
+  col = parseInt(col)
+
+  const surroundingCellsCoords = []
+  let rowOffset = -1
+  let colOffset = -1
+
+  for(let i = 0; i < 3; i++){
+    surroundingCellsCoords.push([row + rowOffset, col + colOffset])
+    rowOffset++
+  }
+  rowOffset = -1
+  colOffset++
+  for(let i = 0; i < 3; i++){
+    surroundingCellsCoords.push([row + rowOffset, col + colOffset])
+    rowOffset++
+  }
+  rowOffset = -1
+  colOffset++
+  for(let i = 0; i < 3; i++){
+    surroundingCellsCoords.push([row + rowOffset, col + colOffset])
+    rowOffset++
+  }
+
+  rowOffset = -1
+  colOffset = -1
+
+  // remove arrays which contain negatives
+  for(let i = surroundingCellsCoords.length - 1; i >= 0; i--){
+    let smallestCoord = Math.min(...surroundingCellsCoords[i])
+    if(smallestCoord < 0){
+      surroundingCellsCoords.splice(i, 1)
+    }
+    let largestCoord = Math.max(...surroundingCellsCoords[i])
+    if(largestCoord > 4){
+      surroundingCellsCoords.splice(i, 1)
+    }
+  }
+
+  //remove target element coordinates
+  surroundingCellsCoords.forEach((coords, key) => {
+    if(coords == [row, col]){
+      surroundingCellsCoords.splice(key, 1)
+    }
+  })
+
+  return surroundingCellsCoords
 }
 
 window.oncontextmenu = (e) => {
