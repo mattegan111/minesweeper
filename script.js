@@ -17,7 +17,7 @@ function placeMines() {
   gameboardSolution.forEach(column => {
     column.forEach(cell => {
       if (Math.random() > 0.5){
-        cell.innerHTML = 'x'
+        cell = 'x'
       }
     })
   })
