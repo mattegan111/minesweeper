@@ -4,6 +4,28 @@ window.onclick = (e) => {
   targetRowColCoords = [e.target.className.split(" ")[0], e.target.parentElement.className]
   e.target.innerHTML = gameboardSolution[targetRowColCoords[0]][targetRowColCoords[1]]
   const surroundingCellsCoords = getSurroundingCellsCoords(targetRowColCoords[0], targetRowColCoords[1])
+  updateSurroundingCells(surroundingCellsCoords)
+}
+
+function updateSurroundingCells(surroundingCellsCoords) {
+  surroundingCellsCoords.forEach(coord => {
+    const cell = document.getElementById(`${coord[0]}${coord[1]}`)
+    // cell.innerHTML = '#'
+    if (gameboardSolution[coord[0]][coord[1]] == 'o'){
+      cell.innerHTML = gameboardSolution[coord[0]][coord[1]]
+      flushEmptyCells(coord)
+    }
+  })
+}
+
+function flushEmptyCells(oldCoord) {
+  const surroundingCellsCoords = getSurroundingCellsCoords(oldCoord[0], oldCoord[1])
+  surroundingCellsCoords.forEach(coord => {
+    const cell = document.getElementById(`${coord[0]}${coord[1]}`)
+    if (gameboardSolution[coord[0]][coord[1]] == 'o'){
+      cell.innerHTML = gameboardSolution[coord[0]][coord[1]]
+    }
+  })
 }
 
 function getSurroundingCellsCoords(row, col) {
@@ -48,7 +70,9 @@ function getSurroundingCellsCoords(row, col) {
 
   //remove target element coordinates
   surroundingCellsCoords.forEach((coords, key) => {
-    if(coords == [row, col]){
+    const coordsString = `${coords[0]}${coords[1]}`
+    const keyString = `${row}${col}`
+    if(coordsString == keyString){
       surroundingCellsCoords.splice(key, 1)
     }
   })
