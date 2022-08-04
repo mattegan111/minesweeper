@@ -20,7 +20,7 @@ for (let i = 0; i < sideLength; i++) {
       false, 
       row, 
       column, 
-      0, 
+      0 
     )
     cells.push(cell)
   }
