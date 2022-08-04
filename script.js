@@ -40,6 +40,7 @@ cells.forEach(cell => {
 })
 
 window.onclick = handleLeftClick
+window.oncontextmenu = handleRightClick
 
 function handleLeftClick(e) {
   const targetCellCoords = e.target.classList[0]
@@ -48,4 +49,15 @@ function handleLeftClick(e) {
   })
   targetCell.isRevealed = true
   e.target.classList.add('cell-revealed')
+}
+
+function handleRightClick(e) {
+  e.preventDefault()
+  const targetCellCoords = e.target.classList[0]
+  const targetCell = cells.find(cell => {
+    return cell.row == targetCellCoords[0] && cell.column == targetCellCoords[1]
+  })
+  targetCell.isFlagged = !targetCell.isFlagged
+  e.target.classList.toggle('cell-flagged')
+  console.log(targetCell.isFlagged)
 }

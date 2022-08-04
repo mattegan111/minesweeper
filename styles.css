@@ -12,3 +12,7 @@
 .cell-revealed{
   background-color: #ffffff;
 }
+
+.cell-flagged{
+  background-color: #ff0000;
+}
