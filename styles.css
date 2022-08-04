@@ -1,9 +1,10 @@
 #gameboard{
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  width: 60vh;
+  height: 60vh;
 }
 
-#container{
-  width: 100px;
+.cell{
+  background-color: #eeeeee;
+  border: solid 1px black;
 }

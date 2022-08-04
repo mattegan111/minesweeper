@@ -26,4 +26,13 @@ for (let i = 0; i < sideLength; i++) {
   }
 }
 
-console.log(cells)
+const gameboardDOM = document.getElementById('gameboard')
+gameboardDOM.style.gridTemplateColumns = `repeat(${sideLength}, 1fr)`;
+gameboardDOM.style.gridTemplateRows = `repeat(${sideLength}, 1fr)`;
+
+cells.forEach(cell => {
+  const cellElement = document.createElement('div')
+  cellElement.classList.add(`${cell.row}${cell.column}`)
+  cellElement.classList.add('cell')
+  gameboardDOM.append(cellElement)
+})
