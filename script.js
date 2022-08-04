@@ -50,7 +50,7 @@ function handleLeftClick(e) {
   })
   targetCell.isRevealed = true
   e.target.classList.add('cell-revealed')
-  console.log(targetCell.isMined)
+  checkLoss(targetCell)
 }
 
 function handleRightClick(e) {
@@ -61,4 +61,9 @@ function handleRightClick(e) {
   })
   targetCell.isFlagged = !targetCell.isFlagged
   e.target.classList.toggle('cell-flagged')
+}
+
+function checkLoss(targetCell){
+  if(targetCell.isMined == true) { alert('you lose') }
+  location.reload()
 }
