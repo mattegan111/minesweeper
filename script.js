@@ -96,6 +96,8 @@ function handleRightClick(e) {
 }
 
 function checkLoss(targetCell){
-  if(targetCell.isMined == true) { alert('you lose') }
-  location.reload()
+  if(targetCell.isMined == true) { 
+    alert('you lose') 
+    location.reload()
+  }
 }
