@@ -29,6 +29,36 @@ for (let i = 0; i < sideLength; i++) {
   }
 }
 
+cells.forEach((cell, key) => {
+  const currentCellRow = cell.row
+  const currentCellColumn = cell.column
+  
+  let possibleRows = [currentCellRow - 1, currentCellRow, currentCellRow + 1]
+  let filteredPossibleRows = possibleRows.filter(row => {return row > -1 && row < sideLength})
+  
+  let possibleColumns = [currentCellColumn - 1, currentCellColumn, currentCellColumn + 1]
+  let filteredPossibleColumns = possibleColumns.filter(column => {return column > -1 && column < sideLength})
+
+  let possibleCoords = []
+  filteredPossibleRows.forEach(row => {
+    filteredPossibleColumns.forEach(column => {
+      if(`${row}${column}` != `${currentCellRow}${currentCellColumn}`){
+        possibleCoords.push(`${row}${column}`)
+      }
+    })
+  })
+
+  let minesNearbyCount = 0
+  possibleCoords.forEach(coordStr => {
+    let cellAtCoords = cells.find(cell => {return cell.row == coordStr[0] && cell.column == coordStr[1]})
+    if(cellAtCoords.isMined == true){
+      minesNearbyCount++  
+    }
+  })
+
+  cell.minesNearbyCount = minesNearbyCount
+})
+
 const gameboardDOM = document.getElementById('gameboard')
 gameboardDOM.style.gridTemplateColumns = `repeat(${sideLength}, 1fr)`;
 gameboardDOM.style.gridTemplateRows = `repeat(${sideLength}, 1fr)`;
@@ -50,6 +80,8 @@ function handleLeftClick(e) {
   })
   targetCell.isRevealed = true
   e.target.classList.add('cell-revealed')
+  e.target.innerHTML += targetCell.minesNearbyCount
+  e.target.innerHTML += targetCell.isMined
   checkLoss(targetCell)
 }
 
