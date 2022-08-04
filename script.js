@@ -29,7 +29,7 @@ for (let i = 0; i < sideLength; i++) {
   }
 }
 
-cells.forEach((cell, key) => {
+cells.forEach(cell => {
   const currentCellRow = cell.row
   const currentCellColumn = cell.column
   
