@@ -16,14 +16,15 @@ for (let i = 0; i < sideLength; i++) {
   let row = i
   for (let j = 0; j < sideLength; j++) {
     let column = j
+    let isMined = Boolean(Math.floor(Math.random() + 0.15))
     let cell = new Cell(
-      false, 
+      isMined, 
       false, 
       false, 
       row, 
       column, 
       0 
-    )
+      )
     cells.push(cell)
   }
 }
@@ -49,6 +50,7 @@ function handleLeftClick(e) {
   })
   targetCell.isRevealed = true
   e.target.classList.add('cell-revealed')
+  console.log(targetCell.isMined)
 }
 
 function handleRightClick(e) {
@@ -59,5 +61,4 @@ function handleRightClick(e) {
   })
   targetCell.isFlagged = !targetCell.isFlagged
   e.target.classList.toggle('cell-flagged')
-  console.log(targetCell.isFlagged)
 }
