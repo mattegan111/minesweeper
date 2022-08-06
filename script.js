@@ -1,3 +1,4 @@
+//create cells
 class Cell {
   constructor(isMined, isFlagged, isRevealed, row, column, minesNearbyCount){
     this.isMined = isMined;
@@ -29,7 +30,41 @@ for (let i = 0; i < sideLength; i++) {
   }
 }
 
+//build gameboard
+const gameboardDOM = document.getElementById('gameboard')
+gameboardDOM.style.gridTemplateColumns = `repeat(${sideLength}, 1fr)`;
+gameboardDOM.style.gridTemplateRows = `repeat(${sideLength}, 1fr)`;
+
 cells.forEach(cell => {
+  const cellElement = document.createElement('div')
+  cellElement.classList.add(`${cell.row}${cell.column}`)
+  cellElement.classList.add('cell')
+  gameboardDOM.append(cellElement)
+})
+
+window.onclick = handleLeftClick
+window.oncontextmenu = handleRightClick
+
+//attribute mines to cells on gameboard
+cells.forEach(cell => {
+  let nearbyCells = getNearbyCells(cell)
+  attributeMinesNearbyCount(cell, nearbyCells)
+})
+
+//utils
+function attributeMinesNearbyCount(cell, nearbyCells){
+  let minesNearbyCount = 0
+  nearbyCells.forEach(coordStr => {
+    let cellAtCoords = cells.find(cell => {return cell.row == coordStr[0] && cell.column == coordStr[1]})
+    if(cellAtCoords.isMined == true){
+      minesNearbyCount++  
+    }
+  })
+
+  cell.minesNearbyCount = minesNearbyCount
+}
+
+function getNearbyCells(cell) {
   const currentCellRow = cell.row
   const currentCellColumn = cell.column
   
@@ -48,30 +83,8 @@ cells.forEach(cell => {
     })
   })
 
-  let minesNearbyCount = 0
-  possibleCoords.forEach(coordStr => {
-    let cellAtCoords = cells.find(cell => {return cell.row == coordStr[0] && cell.column == coordStr[1]})
-    if(cellAtCoords.isMined == true){
-      minesNearbyCount++  
-    }
-  })
-
-  cell.minesNearbyCount = minesNearbyCount
-})
-
-const gameboardDOM = document.getElementById('gameboard')
-gameboardDOM.style.gridTemplateColumns = `repeat(${sideLength}, 1fr)`;
-gameboardDOM.style.gridTemplateRows = `repeat(${sideLength}, 1fr)`;
-
-cells.forEach(cell => {
-  const cellElement = document.createElement('div')
-  cellElement.classList.add(`${cell.row}${cell.column}`)
-  cellElement.classList.add('cell')
-  gameboardDOM.append(cellElement)
-})
-
-window.onclick = handleLeftClick
-window.oncontextmenu = handleRightClick
+  return possibleCoords
+}
 
 function handleLeftClick(e) {
   const targetCellCoords = e.target.classList[0]
