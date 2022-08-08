@@ -17,7 +17,8 @@ for (let i = 0; i < sideLength; i++) {
   let row = i
   for (let j = 0; j < sideLength; j++) {
     let column = j
-    let isMined = Boolean(Math.floor(Math.random() + 0.15))
+    // let isMined = Boolean(Math.floor(Math.random() + 0.15))
+    let isMined = false
     let cell = new Cell(
       isMined, 
       false, 
@@ -37,7 +38,8 @@ gameboardDOM.style.gridTemplateRows = `repeat(${sideLength}, 1fr)`;
 
 cells.forEach(cell => {
   const cellElement = document.createElement('div')
-  cellElement.classList.add(`${cell.row}${cell.column}`)
+  cellElement.setAttribute("id", `${cell.row}${cell.column}`);
+  // cellElement.classList.add(`${cell.row}${cell.column}`)
   cellElement.classList.add('cell')
   gameboardDOM.append(cellElement)
 })
@@ -51,42 +53,47 @@ cells.forEach(cell => {
   attributeMinesNearbyCount(cell, nearbyCells)
 })
 
-//reveal 0 cells recursively
 let cellsToTryReveal = []
+let blacklistedCells = []
 function revealZeroes(targetCell){
   // console.log(targetCell)
+  // put target cell at start of array
+  cellsToTryReveal.unshift(targetCell)
+
+  //add to array possible cells to reveal recursively
   let nearbyCells = getNearbyCells(targetCell)
-  let nearbyCellsWithZeroNearbyMines = nearbyCells.filter(x => {
-    return cells[x].minesNearbyCount === 0
+  let nearbyCellsWithZeroNearbyMinesCOORDS = nearbyCells.filter(x => {
+    return cells[x].minesNearbyCount === 0 //Broken!
   })
-  nearbyCellsWithZeroNearbyMines.forEach(x => {
-    cellsToTryReveal.push(x)
-  })
-
-  cellsToTryReveal.forEach((revealTargetCell, key) => {
-    console.log(revealTargetCell)
-    let cellInCells = cells.find(storedCell => {
-      return (storedCell.row === revealTargetCell[0] && storedCell.column === revealTargetCell[1])
+  nearbyCellsWithZeroNearbyMinesCOORDS.forEach(x => {
+    let cellFromCoord = cells.find(cell => {
+      return cell.row == x[0] && cell.column == x[1]
     })
-
-    // console.log(cellInCells[0])
-
-
+    if(!blacklistedCells.includes(cellFromCoord)){
+      cellsToTryReveal.push(cellFromCoord)
+    }
   })
 
 
-  // cellsToTryReveal.forEach(cell => {
-  //   const targetCell = cells.find(x => {
-  //     return x.row == cell[0] && x.column == cell[1]
-  //   })
-  //   targetCell.isRevealed = true
-  //   let cellDOM = document.getElementsByClassName(cell)[0]
-  //   console.log(cellDOM)
-  //   cellDOM.classList.add('cell-revealed')
-  //   cellDOM.innerHTML += targetCell.minesNearbyCount
-  //   cellDOM.innerHTML += targetCell.isMined
-  // });
+  //update the target cell in our script and in DOM
+  let cellInCells = cells.find(storedCell => {
+    return storedCell.row == targetCell.row && storedCell.column == targetCell.column
+  })
+  let str = `${cellInCells.row}${cellInCells.column}`
+  let cellDOM = document.getElementById(str)
+  cellDOM.classList.add('cell-revealed')
+  cellDOM.innerHTML += cellInCells.minesNearbyCount
+  cellDOM.innerHTML += cellInCells.isMined
 
+  //remove target cell from array
+  blacklistedCells.push(cellsToTryReveal[0])
+  cellsToTryReveal.splice(0, 1)
+
+  if(cellsToTryReveal.length > 0){
+    revealZeroes(cellsToTryReveal[0])
+  }
+
+  blacklistedCells = []
 }
 
 //utils
@@ -125,7 +132,7 @@ function getNearbyCells(cell) {
 }
 
 function handleLeftClick(e) {
-  const targetCellCoords = e.target.classList[0]
+  const targetCellCoords = e.target.id
   const targetCell = cells.find(cell => {
     return cell.row == targetCellCoords[0] && cell.column == targetCellCoords[1]
   })
@@ -141,7 +148,7 @@ function handleLeftClick(e) {
 
 function handleRightClick(e) {
   e.preventDefault()
-  const targetCellCoords = e.target.classList[0]
+  const targetCellCoords = e.target.id
   const targetCell = cells.find(cell => {
     return cell.row == targetCellCoords[0] && cell.column == targetCellCoords[1]
   })
