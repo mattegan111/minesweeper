@@ -51,6 +51,44 @@ cells.forEach(cell => {
   attributeMinesNearbyCount(cell, nearbyCells)
 })
 
+//reveal 0 cells recursively
+let cellsToTryReveal = []
+function revealZeroes(targetCell){
+  // console.log(targetCell)
+  let nearbyCells = getNearbyCells(targetCell)
+  let nearbyCellsWithZeroNearbyMines = nearbyCells.filter(x => {
+    return cells[x].minesNearbyCount === 0
+  })
+  nearbyCellsWithZeroNearbyMines.forEach(x => {
+    cellsToTryReveal.push(x)
+  })
+
+  cellsToTryReveal.forEach((revealTargetCell, key) => {
+    console.log(revealTargetCell)
+    let cellInCells = cells.find(storedCell => {
+      return (storedCell.row === revealTargetCell[0] && storedCell.column === revealTargetCell[1])
+    })
+
+    // console.log(cellInCells[0])
+
+
+  })
+
+
+  // cellsToTryReveal.forEach(cell => {
+  //   const targetCell = cells.find(x => {
+  //     return x.row == cell[0] && x.column == cell[1]
+  //   })
+  //   targetCell.isRevealed = true
+  //   let cellDOM = document.getElementsByClassName(cell)[0]
+  //   console.log(cellDOM)
+  //   cellDOM.classList.add('cell-revealed')
+  //   cellDOM.innerHTML += targetCell.minesNearbyCount
+  //   cellDOM.innerHTML += targetCell.isMined
+  // });
+
+}
+
 //utils
 function attributeMinesNearbyCount(cell, nearbyCells){
   let minesNearbyCount = 0
@@ -96,6 +134,9 @@ function handleLeftClick(e) {
   e.target.innerHTML += targetCell.minesNearbyCount
   e.target.innerHTML += targetCell.isMined
   checkLoss(targetCell)
+  if(targetCell.minesNearbyCount === 0){
+    revealZeroes(targetCell)
+  }
 }
 
 function handleRightClick(e) {
