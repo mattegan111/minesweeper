@@ -1,2 +1,2 @@
 # minesweeper
-Minesweeper game
+Minesweeper game built from scratch with vanilla javascript
