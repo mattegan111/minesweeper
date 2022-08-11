@@ -55,24 +55,25 @@ cells.forEach(cell => {
 let cellsToTryReveal = []
 function revealZeroes(targetCell){
   // console.log(targetCell)
-  let nearbyCells = getNearbyCells(targetCell)
-  let nearbyCellsWithZeroNearbyMines = nearbyCells.filter(x => {
-    return cells[x].minesNearbyCount === 0
-  })
-  nearbyCellsWithZeroNearbyMines.forEach(x => {
-    cellsToTryReveal.push(x)
-  })
 
-  cellsToTryReveal.forEach((revealTargetCell, key) => {
-    console.log(revealTargetCell)
-    let cellInCells = cells.find(storedCell => {
-      return (storedCell.row === revealTargetCell[0] && storedCell.column === revealTargetCell[1])
-    })
+  // let nearbyCells = getNearbyCells(targetCell)
+  // let nearbyCellsWithZeroNearbyMines = nearbyCells.filter(x => {
+  //   return cells[x].minesNearbyCount === 0
+  // })
+  // nearbyCellsWithZeroNearbyMines.forEach(x => {
+  //   cellsToTryReveal.push(x)
+  // })
 
-    // console.log(cellInCells[0])
+  // cellsToTryReveal.forEach((revealTargetCell, key) => {
+  //   console.log(revealTargetCell)
+  //   let cellInCells = cells.find(storedCell => {
+  //     return (storedCell.row === revealTargetCell[0] && storedCell.column === revealTargetCell[1])
+  //   })
+
+  //   // console.log(cellInCells[0])
 
 
-  })
+  // })
 
 
   // cellsToTryReveal.forEach(cell => {
@@ -90,16 +91,15 @@ function revealZeroes(targetCell){
 }
 
 //utils
-function attributeMinesNearbyCount(cell, nearbyCells){
+function attributeMinesNearbyCount(targetCell, nearbyCells){
   let minesNearbyCount = 0
-  nearbyCells.forEach(coordStr => {
-    let cellAtCoords = cells.find(cell => {return cell.row == coordStr[0] && cell.column == coordStr[1]})
-    if(cellAtCoords.isMined == true){
+  nearbyCells.forEach(cell => {
+    if(cell.isMined == true){
       minesNearbyCount++  
     }
   })
 
-  cell.minesNearbyCount = minesNearbyCount
+  targetCell.minesNearbyCount = minesNearbyCount
 }
 
 function getNearbyCells(cell) {
@@ -112,16 +112,24 @@ function getNearbyCells(cell) {
   let possibleColumns = [currentCellColumn - 1, currentCellColumn, currentCellColumn + 1]
   let filteredPossibleColumns = possibleColumns.filter(column => {return column > -1 && column < sideLength})
 
-  let possibleCoords = []
+  let nearbyCells = []
   filteredPossibleRows.forEach(row => {
     filteredPossibleColumns.forEach(column => {
       if(`${row}${column}` != `${currentCellRow}${currentCellColumn}`){
-        possibleCoords.push(`${row}${column}`)
+
+        const nearbyCell = getCellByCoord(row, column)
+        nearbyCells.push(nearbyCell)
+        // nearbyCells.push(`${row}${column}`) //old way
       }
     })
   })
 
-  return possibleCoords
+  return nearbyCells
+}
+
+function getCellByCoord(cellRow, cellColumn) {
+  const cell = cells.find(x => x.row == cellRow && x.column == cellColumn)
+  return cell
 }
 
 function handleLeftClick(e) {
