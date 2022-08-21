@@ -48,36 +48,18 @@ cells.forEach((cell) => {
 let cellsToTryReveal = []
 function revealZeroes(targetCell) {
   // 1 cells to check neighbors of
-  const toCheckArr = []
   // 2 cells to reveal
-  const toRevealArr = []
   // 3 cells of which their neigbors have been checked
-  const checkedArr = []
-  
   // start at target cell.
   // get the neighbors of val 0
-  let nearbyCellsOfZero = getNearbyCells(targetCell).filter(x => x.minesNearbyCount == 0)
-
   //   add them to array "2: cells to reveal array"
-  toRevealArr.push(nearbyCellsOfZero)
-
   //   add them to "1 cells to check neighbors of", if not added already
-
   // add target cell to "3 cells of which their neigbors have been checked"
-
   // next, we repeat the process above for each cell in array 1
-
-  // must use a normal for loop so that cells added during iteration will also be processed as the index reaches them.
-
+  // // !!! must use a normal for loop so that cells added during iteration will also be processed as the index reaches them.
   // check whether this cell is already in array 3, exit if true
-
   // if we have no cells to do, the process is complete and we can reveal cells in arr 2
-
   // continue to loop through array 1, each time ensuring the cell had not already been checked.
-
-
-
-
   // console.log(targetCell)
   // let nearbyCells = getNearbyCells(targetCell)
   // let nearbyCellsWithZeroNearbyMines = nearbyCells.filter(x => {
